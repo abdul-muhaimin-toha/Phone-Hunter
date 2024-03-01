@@ -13,10 +13,17 @@ fetchMobileInformation(searchText);
 
 // Fetch Function
 async function fetchMobileInformation(searchText) {
+  const div = document.createElement('div');
+  div.classList =
+    'flex flex-col justify-center items-center text-center font-bold p-6 gap-2 col-span-3';
+  div.innerHTML = ` <span class="loading loading-spinner text-primary text-[#0D6EFD]"></span>
+                    <h5 class="text-2xl text-[#0D6EFD]">Loading</h5>`;
+  ProductContainerElement.appendChild(div);
   const response = await fetch(
     `https://openapi.programming-hero.com/api/phones?search=${searchText}`
   );
   const { data: phones } = await response.json();
+  ProductContainerElement.innerHTML = '';
   displayMobileCard(phones);
 }
 
