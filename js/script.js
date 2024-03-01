@@ -3,6 +3,7 @@ const ProductContainerElement = document.getElementById('product-container');
 const viewMoreContainerElement = document.getElementById('view-more-container');
 const searchButtonElement = document.getElementById('search-button');
 const viewMoreButtonElement = document.getElementById('view-more-button');
+const modalContainerElement = document.getElementById('productModal');
 
 // Declaring Necessary Variables
 let viewAllbtnClicked = false;
@@ -25,6 +26,7 @@ async function fetchMobileInformation(searchText) {
   const { data: phones } = await response.json();
   ProductContainerElement.innerHTML = '';
   displayMobileCard(phones);
+  phoneDetails();
 }
 
 // Displaying UI Function
@@ -56,7 +58,7 @@ function displayMobileCard(phones) {
                     <h3 class="text-2xl font-bold text-black mt-6 mb-2 dark:text-white min-h-16">${phone.brand} ${phone.phone_name}</h3>
                     <p class="text-base font-normal text-[#706F6F] dark:text-slate-300 mb-3 min-h-24">There are many variations of passages of available, but the majority have suffered</p>
                     <h4 class="text-2xl font-bold text-black mb-4 dark:text-white">$999</h4>
-                    <button class="bg-[#0D6EFD] text-white md:text-lg font-semibold px-4 py-2 md:px-8 md:py-3 rounded-md hover:bg-opacity-90 duration-150 ease-in mb-2">Show Details</button>
+                    <button id="${phone.slug}" class="phone-details bg-[#0D6EFD] text-white md:text-lg font-semibold px-4 py-2 md:px-8 md:py-3 rounded-md hover:bg-opacity-90 duration-150 ease-in mb-2">Show Details</button>
                      `;
 
     ProductContainerElement.appendChild(div);
@@ -76,3 +78,88 @@ viewMoreButtonElement.addEventListener('click', function () {
   viewAllbtnClicked = true;
   fetchMobileInformation(searchText);
 });
+
+// Phone Details Button
+function phoneDetails() {
+  const phoneDetailsElements = document.querySelectorAll('.phone-details');
+  phoneDetailsElements.forEach((phoneDetailsElement) => {
+    phoneDetailsElement.addEventListener('click', function (event) {
+      const id = event.target.id;
+      fetchMobileDetails(id);
+    });
+  });
+}
+
+// Fetch Mobile Details
+async function fetchMobileDetails(id) {
+  const response = await fetch(
+    `https://openapi.programming-hero.com/api/phone/${id}`
+  );
+  const { data } = await response.json();
+  displayDetails(data);
+}
+
+// Display Modal of Specefic Information
+function displayDetails(data) {
+  modalContainerElement.innerHTML = '';
+  const div = document.createElement('div');
+  div.classList = 'modal-box w-5/6';
+  div.innerHTML = `
+                    <div class="flex flex-col justify-center items-start text-left">
+                      <img
+                      class="w-4/6 md:w-2/6 mb-4 self-center"
+                      src="${data.image}"
+                      alt="{phone.name}"
+                      />
+                      <h3 class="font-bold text-lg pb-6">${
+                        data.brand || 'Information Unavialable'
+                      } ${data.name || 'Information Unavialable'}</h3>
+                      <p class="pb-2">
+                        <span class="font-bold text-sm">Storage: </span>${
+                          data.mainFeatures?.storage ||
+                          'Information Unavialable'
+                        }
+                      </p>
+                      <p class="pb-2">
+                        <span class="font-bold text-sm">Display Size: </span>${
+                          data.mainFeatures?.displaySize ||
+                          'Information Unavialable'
+                        }
+                      </p>
+                      <p class="pb-2">
+                        <span class="font-bold text-sm">Chipset: </span>${
+                          data.mainFeatures?.chipSet ||
+                          'Information Unavialable'
+                        }
+                      </p>
+                      <p class="pb-2">
+                        <span class="font-bold text-sm">Memory: </span>${
+                          data.mainFeatures?.memory || 'Information Unavialable'
+                        }
+                      </p>
+                      <p class="pb-2">
+                        <span class="font-bold text-sm">Release Date: </span> ${
+                          data.releaseDate || 'Information Unavialable'
+                        }
+                      </p>
+                      <p class="pb-2">
+                        <span class="font-bold text-sm">Brand: </span>${
+                          data.brand || 'Information Unavialable'
+                        }
+                      </p>
+                      <p class="pb-2">
+                        <span class="font-bold text-sm">GPS: </span>${
+                          data.others?.GPS || 'Information Unavialable'
+                        }
+                      </p>
+                    </div>
+                    <div class="modal-action">
+                      <form method="dialog">
+                        <button class="btn">Close</button>
+                      </form>
+                    </div>
+                  `;
+
+  modalContainerElement.appendChild(div);
+  productModal.showModal();
+}
