@@ -52,7 +52,7 @@ function displayMobileCard(phones) {
     const div = document.createElement('div');
     div.classList = `p-6 border shadow-md rounded-lg flex flex-col text-center items-center dark:border-slate-800 dark:bg-slate-900`;
     div.innerHTML = `
-                    <div class="w-full flex justify-center bg-slate-100 py-7 px-2 pb-12 rounded-lg dark:bg-slate-800">
+                    <div class="w-full flex justify-center bg-slate-100 py-7 px-2 pb-12 rounded-lg dark:bg-slate-200">
                       <img src="${
                         phone.image || '../media/product.png'
                       }" alt="Product Picture" class="w-4/6" />
@@ -113,7 +113,7 @@ function displayDetails(data) {
   div.innerHTML = `
                     <div class="flex flex-col justify-center items-start text-left">
                       <img
-                      class="w-4/6 md:w-2/6 mb-4 self-center"
+                      class="w-4/6 md:w-2/6 mb-4 self-center rounded-xl"
                       src="${data.image || '../media/product.png'}"
                       alt="{phone.name}"
                       />
