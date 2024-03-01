@@ -23,6 +23,14 @@ async function fetchMobileInformation(searchText) {
 // Displaying UI Function
 function displayMobileCard(phones) {
   ProductContainerElement.innerHTML = '';
+  if (!phones.length) {
+    const div = document.createElement('div');
+    div.classList =
+      'flex flex-col justify-center text-center font-bold p-6 gap-2 col-span-3';
+    div.innerHTML = ` <h5 class="text-2xl text-[#0D6EFD]">Sorry! Nothing Found.</h5>
+                      <h4 class="text-xl">Try something else.</h4>`;
+    ProductContainerElement.appendChild(div);
+  }
   if (phones.length > 15 && !viewAllbtnClicked) {
     phones = phones.slice(0, 15);
     viewMoreContainerElement.classList.remove('hidden');
