@@ -14,7 +14,7 @@ fetchMobileInformation(searchText);
 
 // Fetch Function
 async function fetchMobileInformation(searchText) {
-  ProductContainerElement.innerHTML = '';
+  if (!viewAllbtnClicked) ProductContainerElement.innerHTML = '';
   viewMoreContainerElement.classList.add('hidden');
   const div = document.createElement('div');
   div.classList =
