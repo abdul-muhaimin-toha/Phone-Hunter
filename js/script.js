@@ -14,6 +14,8 @@ fetchMobileInformation(searchText);
 
 // Fetch Function
 async function fetchMobileInformation(searchText) {
+  ProductContainerElement.innerHTML = '';
+  viewMoreContainerElement.classList.add('hidden');
   const div = document.createElement('div');
   div.classList =
     'flex flex-col justify-center items-center text-center font-bold p-6 gap-2 col-span-3';
@@ -43,8 +45,10 @@ function displayMobileCard(phones) {
   if (phones.length > 15 && !viewAllbtnClicked) {
     phones = phones.slice(0, 15);
     viewMoreContainerElement.classList.remove('hidden');
+    viewMoreContainerElement.classList.add('flex');
   } else {
     viewMoreContainerElement.classList.add('hidden');
+    viewMoreContainerElement.classList.remove('flex');
     viewAllbtnClicked = false;
   }
 
